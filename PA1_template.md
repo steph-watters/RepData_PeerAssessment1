@@ -10,8 +10,9 @@ output:
 
 ## Loading and preprocessing the data
 
-1. & 2. The activity.zip file was placed in the working directory, and was unzipped
+The activity.zip file was placed in the working directory, and was unzipped
 using the following code.
+
 
 ```r
 unzip("activity.zip")
@@ -19,6 +20,7 @@ unzip("activity.zip")
 
 The data was then loaded and processed. 
 This processing involved changing the date column to a date class variable.
+
 
 ```r
 activity_dataset <- read.csv("activity.csv")
@@ -29,7 +31,7 @@ activity_dataset$date <- as.Date(activity_dataset$date, format = "%Y-%m-%d")
 
 ## What is mean total number of steps taken per day?
 
-1. The histogram below shows the frequencies of the total number of steps 
+The histogram below shows the frequencies of the total number of steps 
 taken a day.
 
 
@@ -48,7 +50,7 @@ hist(total_steps_per_date$Steps, main = "Total Number of Steps Taken Each Day",
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
-2. The following code calculates the mean and median total number of steps per day.
+The following code calculates the mean and median total number of steps per day.
 
 
 ```r
@@ -64,7 +66,7 @@ The median total number of steps taken per day was 10395.
 
 ## What is the average daily activity pattern?
 
-1. The time series plot below shows the average number of steps taken per 5-minute 
+The time series plot below shows the average number of steps taken per 5-minute 
 interval, averaged across all days.
 
 
@@ -88,7 +90,8 @@ plot_avg_steps_interval <- plot(type = "l", x = mean_steps_per_interval$Interval
 
 ![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
 
-2. The following code finds the interval with the maximum number of steps.
+The following code finds the interval with the maximum number of steps.
+
 
 ```r
 ### Find interval with the largest average steps
@@ -107,7 +110,7 @@ maximum number of steps is 835.
 
 ## Inputing missing values
 
-1. The following code calculates the number of missing values in the dataset.
+The following code calculates the number of missing values in the dataset.
 
 
 ```r
@@ -117,7 +120,7 @@ count_na <- sum(is.na(activity_dataset))
 
 The total number of missing values in the dataset is 2304.
 
-2. & 3. The missing values in the dataset were filled in with the mean number 
+The missing values in the dataset were filled in with the mean number 
 of steps in the respective 5-minute interval, taken across all days. A new 
 dataset was also created with these missing values filled. The code to do both 
 of these steps is shown below.
@@ -131,7 +134,7 @@ activitydata_NA_sub$steps[which(is.na(activitydata_NA_sub$steps))] <-
                                             mean_steps_per_interval$Interval)]
 ```
 
-4. The histogram below shows the total number of steps taken per day using the 
+The histogram below shows the total number of steps taken per day using the 
 filled in dataset.
 
 
@@ -188,7 +191,7 @@ values are ignored.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-1. The following code creates a new factor variable in the dataset with two levels,
+The following code creates a new factor variable in the dataset with two levels,
 'weekday' and 'weekend'.
 
 
@@ -210,7 +213,7 @@ dataset_days_comb$day_name[dataset_days_comb$day_name == "Sunday"] <- "weekend"
 dataset_days_comb$day_name <- as.factor(dataset_days_comb$day_name)
 ```
 
-2. The following panel plot shows a time series plot of the average number of
+The following panel plot shows a time series plot of the average number of
 steps taken per day across each 5-minute interval, averaged across all weekend
 and weekday days.
 
