@@ -9,13 +9,15 @@ output:
 
 1. & 2. The activity.zip file was placed in the working directory, and was unzipped
 using the following code.
-```{r echo=TRUE}
+
+```r
 unzip("activity.zip")
 ```
 
 The data was then loaded and processed. 
 This processing involved changing the date column to a date class variable.
-```{r echo=TRUE}
+
+```r
 activity_dataset <- read.csv("activity.csv")
 activity_dataset$date <- as.character(activity_dataset$date)
 activity_dataset$date <- as.Date(activity_dataset$date, format = "%Y-%m-%d")
@@ -27,7 +29,8 @@ activity_dataset$date <- as.Date(activity_dataset$date, format = "%Y-%m-%d")
 1. The histogram below shows the frequencies of the total number of steps 
 taken a day.
 
-```{r echo=TRUE}
+
+```r
 ### Sum the number of steps per day and amend variable names 
 library(plyr)
 total_steps <- function(x) sum(x$steps, na.rm = TRUE)
@@ -40,17 +43,20 @@ hist(total_steps_per_date$Steps, main = "Total Number of Steps Taken Each Day",
      xlab = "Total Steps Taken", ylab = "Frequency", ylim = c(0, 30))
 ```
 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+
 2. The following code calculates the mean and median total number of steps per day.
 
-```{r echo=TRUE}
+
+```r
 ### Calculate and report mean and median total number of steps per day
 mean_per_day <- mean(total_steps_per_date$Steps)
 median_per_day <- median(total_steps_per_date$Steps)
 ```
 
-The mean total number of steps taken per day was `r mean_per_day`.
+The mean total number of steps taken per day was 9354.2295082.
 
-The median total number of steps taken per day was `r median_per_day`.
+The median total number of steps taken per day was 10395.
 
 
 ## What is the average daily activity pattern?
@@ -58,7 +64,8 @@ The median total number of steps taken per day was `r median_per_day`.
 1. The time series plot below shows the average number of steps taken per 5-minute 
 interval, averaged across all days.
 
-```{r echo=TRUE}
+
+```r
 ## Average the number of steps in each interval, averaged across all dates
 library(plyr)
 mean_steps <- function(x) mean(x$steps, na.rm = TRUE)
@@ -76,11 +83,19 @@ plot_avg_steps_interval <- plot(type = "l", x = mean_steps_per_interval$Interval
                  ylab = "Average Number of Steps Taken")
 ```
 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+
 2. The following code finds the interval with the maximum number of steps.
-```{r echo=TRUE}
+
+```r
 ### Find interval with the largest average steps
 interval_largest_avg_steps <- mean_steps_per_interval[which.max(mean_steps_per_interval$Steps),]
 interval_largest_avg_steps
+```
+
+```
+##     Interval    Steps
+## 104      835 206.1698
 ```
 
 The 5-minute interval, when averaged across all days in the dataset, with the 
@@ -91,19 +106,21 @@ maximum number of steps is 835.
 
 1. The following code calculates the number of missing values in the dataset.
 
-```{r echo=TRUE}
+
+```r
 ###Calculate and report the number of missing values in the dataset
 count_na <- sum(is.na(activity_dataset))
 ```
 
-The total number of missing values in the dataset is `r count_na`.
+The total number of missing values in the dataset is 2304.
 
 2. & 3. The missing values in the dataset were filled in with the mean number 
 of steps in the respective 5-minute interval, taken across all days. A new 
 dataset was also created with these missing values filled. The code to do both 
 of these steps is shown below.
 
-```{r echo=TRUE}
+
+```r
 activitydata_NA_sub <- activity_dataset
 activitydata_NA_sub$steps[which(is.na(activitydata_NA_sub$steps))] <- 
         mean_steps_per_interval$Steps[match(activitydata_NA_sub$interval
@@ -114,7 +131,8 @@ activitydata_NA_sub$steps[which(is.na(activitydata_NA_sub$steps))] <-
 4. The histogram below shows the total number of steps taken per day using the 
 filled in dataset.
 
-```{r echo=TRUE}
+
+```r
 ### Calculate total steps per day across interval
 library(plyr)
 total_steps_NAsub <- function(x) sum(x$steps, na.rm = TRUE)
@@ -127,15 +145,29 @@ hist(total_steps_date_NAsub$Steps, main = "Total Number of Steps Taken Each Day 
      xlab = "Total Steps Taken Per Day", ylab = "Frequency", ylim = c(0, 40))
 ```
 
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
+
 The following code calculates the mean and median total number of steps per day 
 using this filled in dataset.
 
-```{r echo=TRUE}
+
+```r
 ## Calculate mean and median steps per day
 mean_per_day_NAsub <- mean(total_steps_date_NAsub$Steps)
 mean_per_day_NAsub
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median_per_day_NAsub <- median(total_steps_date_NAsub$Steps)
 median_per_day_NAsub
+```
+
+```
+## [1] 10766.19
 ```
 
 Using this calculation, the mean total number of steps taken per day was 
@@ -156,7 +188,8 @@ values are ignored.
 1. The following code creates a new factor variable in the dataset with two levels,
 'weekday' and 'weekend'.
 
-```{r echo=TRUE}
+
+```r
 ### Change dates into day of the week names, then bind to dataframe
 dataset_days <- activitydata_NA_sub
 day_name <- weekdays(dataset_days$date)
@@ -178,7 +211,8 @@ dataset_days_comb$day_name <- as.factor(dataset_days_comb$day_name)
 steps taken per day across each 5-minute interval, averaged across all weekend
 and weekday days.
 
-```{r echo=TRUE}
+
+```r
 ### Calculate the average of the number of steps in each interval, averaged 
 ### across the weekend or weekday values
 library(plyr)
@@ -198,3 +232,5 @@ plot_avg_steps_interval_day <- xyplot(Steps ~ Interval | Day_Name,
                                     ylab = "Number of Steps Taken")
 plot_avg_steps_interval_day
 ```
+
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
