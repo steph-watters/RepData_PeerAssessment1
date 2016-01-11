@@ -1,9 +1,12 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 output: 
-  html_document: 
+  html_document: PA1_template.html
     keep_md: true
 ---
+
+# Reproducible Research: Peer Assessment 1
+-------------------------------------------
 
 ## Loading and preprocessing the data
 
